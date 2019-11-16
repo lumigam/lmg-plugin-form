@@ -10,5 +10,4 @@ add_shortcode( 'lmg-plugin-form', 'LMG-plugin-form' );
 function LMG-plugin-form{
 
 
-
 }
