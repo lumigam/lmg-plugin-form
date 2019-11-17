@@ -2,7 +2,7 @@
 /*
 * Plugin Name: lmg-plugin-form
 * Author: Luismi G
-* Description: Plugin que genera un formulario utilizando el shortcode [lmg-plugin-form]
+* Description: Plugin que genera un formulario utilizando el shortcode [lmg_plugin_form]
 */
 
 add_shortcode( 'lmg_plugin_form', 'LMG_plugin_form' );
