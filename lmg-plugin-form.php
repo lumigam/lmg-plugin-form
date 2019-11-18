@@ -5,6 +5,34 @@
 * Description: Plugin que genera un formulario utilizando el shortcode [lmg_plugin_form]
 */
 
+register_activation_hook( __FILE__, 'lmg_Aspirante_init' );
+
+function lmg_Aspirante_init()
+{
+
+    global $wpdb;
+    $tabla_aspirante = $wpdb->prefix . 'aspirante';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    //Prepara la consulta que vamos a lanzar para crear la $tabla
+    $query = "CREATE TABLE IF NOT EXITS $tabla_aspirante(
+      id mediumint(9) NOT NULL AUTO_INCREMENT,
+      nombre varchar (40) NOT NULL,
+      correo varchar (100) NOT NULL,
+      nivel_html smallint (4) NOT NULL,
+      nivel_css smallint (4) NOT NULL,
+      nivel_js samllint (4) NOT NULL,
+      created_at datetime NOT NULL,
+      UNIQUE (id)
+    ) $charset_collate";
+    include_once ABSPATH . 'wp-admin/includes/upgrades.php';
+    dbDelta($query);
+
+}
+
+
+
+//Definde el shortcode que pinta el formulario
 add_shortcode( 'lmg_plugin_form', 'LMG_plugin_form' );
 
 function LMG_plugin_form () {
