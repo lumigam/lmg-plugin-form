@@ -25,7 +25,7 @@ function lmg_Aspirante_init()
       created_at datetime NOT NULL,
       UNIQUE (id)
     ) $charset_collate";
-    include_once ABSPATH . 'wp-admin/includes/upgrades.php';
+    include_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta($query);
 
 }
