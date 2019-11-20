@@ -15,13 +15,13 @@ function lmg_Aspirante_init()
     $charset_collate = $wpdb->get_charset_collate();
 
     //Prepara la consulta que vamos a lanzar para crear la $tabla
-    $query = "CREATE TABLE IF NOT EXITS $tabla_aspirante(
-      id mediumint(9) NOT NULL AUTO_INCREMENT,
+    $query = "CREATE TABLE IF NOT EXISTS $tabla_aspirante(
+      id mediumint (9) NOT NULL AUTO_INCREMENT,
       nombre varchar (40) NOT NULL,
       correo varchar (100) NOT NULL,
       nivel_html smallint (4) NOT NULL,
       nivel_css smallint (4) NOT NULL,
-      nivel_js samllint (4) NOT NULL,
+      nivel_js smallint (4) NOT NULL,
       created_at datetime NOT NULL,
       UNIQUE (id)
     ) $charset_collate";
