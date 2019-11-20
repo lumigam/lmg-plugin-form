@@ -40,6 +40,43 @@ function LMG_plugin_form () {
       // Carga esta hoja de estilo para poner más bonito el formulario
       wp_enqueue_style('css_aspirante', plugins_url('style.css', __FILE__));
 
+      /* Antes de pintar el formulario, vamos a decirle que meta los datos en la BD
+      como estamos en una funcion tenemos que traer aquí las mismas variables que están fuera donde hay que grabar los datos */
+      global $wpdb;
+      //comprobamos si hay datos en el formulario
+      if (!empty ($_POST)
+          AND $_POST['nombre'] != ''
+          AND is_email($_POST['correo'])
+          AND $_POST['nivel_html'] != ''
+          AND $_POST['nivel_css'] != ''
+          AND $_POST['nivel_js'] != ''
+          AND $_POST['aceptacion'] == "1"
+        ){
+        //Si viene con datos en nombre, los metemos en la tabla, tb creamos variables para sanear lo que viene en el form
+        $tabla_aspirante = $wpdb->prefix . 'aspirante';
+        $nombre = sanitize_text_field( $_POST['nombre'] );
+        $correo = sanitize_text_field( $_POST['correo'] );
+        //los de seleccion los saneamos a enteros
+        $nivel_html = (int)$_POST['nivel_html'];
+        $nivel_css = (int)$_POST['nivel_css'];
+        $nivel_js = (int)$_POST['nivel_js'];
+        $aceptacion = (int)$_POST['aceptacion'];
+        //Modificacion el formato de la fecha
+        $created_at = date('Y-m-d H:i:s');
+        $wpdb->insert(
+            $tabla_aspirante,
+            array(
+                'nombre' => $nombre,
+                'correo' => $correo,
+                'nivel_hmtl' => $nivel_html,
+                'nivel_css' => $nivel_css,
+                'nivel_js' => $nivel_js,
+                'aceptacion' => $aceptacion,
+                'created_at' => $created_at;
+              )
+            );
+      }
+
       // Esta función de PHP activa el almacenamiento en búfer de salida (output buffer)
       // Cuando termine el formulario lo imprime con la función ob_get_clean
       ob_start( );
@@ -54,7 +91,7 @@ function LMG_plugin_form () {
 
         <div class="form-input">
           <label for="correo">Correo</label>
-          <input type="email" name="Correo" id="correo" required>
+          <input type="correo" name="Correo" id="correo" required>
         </div>
 
         <div class="form-input">
