@@ -11,11 +11,11 @@ function lmg_Aspirante_init()
 {
 
     global $wpdb;
-    $tabla_aspirante = $wpdb->prefix . 'aspirante';
+    $tabla_aspirantes = $wpdb->prefix . 'aspirante';
     $charset_collate = $wpdb->get_charset_collate();
 
     //Prepara la consulta que vamos a lanzar para crear la $tabla
-    $query = "CREATE TABLE IF NOT EXISTS $tabla_aspirante(
+    $query = "CREATE TABLE IF NOT EXISTS $tabla_aspirantes(
       id mediumint (9) NOT NULL AUTO_INCREMENT,
       nombre varchar (40) NOT NULL,
       correo varchar (100) NOT NULL,
@@ -51,9 +51,10 @@ function LMG_plugin_form () {
           AND $_POST['nivel_css'] != ''
           AND $_POST['nivel_js'] != ''
           AND $_POST['aceptacion'] == "1"
+          AND wp_verify_nonce($_POST['aspirante_nonce'], 'graba_aspirante')
         ){
         //Si viene con datos en nombre, los metemos en la tabla, tb creamos variables para sanear lo que viene en el form
-        $tabla_aspirante = $wpdb->prefix . 'aspirante';
+        $tabla_aspirantes = $wpdb->prefix . 'aspirante';
         $nombre = sanitize_text_field( $_POST['nombre'] );
         $correo = sanitize_text_field( $_POST['correo'] );
         //los de seleccion los saneamos a enteros
@@ -64,7 +65,7 @@ function LMG_plugin_form () {
         //Modificacion el formato de la fecha
         $created_at = date('Y-m-d H:i:s');
         $wpdb->insert(
-            $tabla_aspirante,
+            $tabla_aspirantes,
             array(
                 'nombre' => $nombre,
                 'correo' => $correo,
@@ -72,9 +73,11 @@ function LMG_plugin_form () {
                 'nivel_css' => $nivel_css,
                 'nivel_js' => $nivel_js,
                 'aceptacion' => $aceptacion,
-                'created_at' => $created_at;
+                'created_at' => $created_at,
               )
             );
+            echo "<p class='exito'><b>Tus datos han sido registrados</b>. Gracias
+            por tu interés. En breve contactaré contigo.<p>";
       }
 
       // Esta función de PHP activa el almacenamiento en búfer de salida (output buffer)
@@ -83,7 +86,8 @@ function LMG_plugin_form () {
       ?>
 
       <form action="<?php get_the_permalink(); ?>" method="post" class="formulario">
-
+        <!-- La funcion wp_once comprueba que el formulario que se está procesando viene de nuestra web -->
+        <?php wp_nonce_field('graba_aspirante', 'aspirante_nonce'); ?>
         <div class="form-input">
           <label for="nombre">Nombre</label>
           <input type="text" name="nombre" required="required">
