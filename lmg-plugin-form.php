@@ -22,6 +22,8 @@ function lmg_Aspirante_init()
       nivel_html smallint (4) NOT NULL,
       nivel_css smallint (4) NOT NULL,
       nivel_js smallint (4) NOT NULL,
+      operativo varchar (40) NOT NULL,
+      aceptacion smallint (4) NOT NULL,
       created_at datetime NOT NULL,
       UNIQUE (id)
     ) $charset_collate";
@@ -50,6 +52,7 @@ function LMG_plugin_form () {
           AND $_POST['nivel_html'] != ''
           AND $_POST['nivel_css'] != ''
           AND $_POST['nivel_js'] != ''
+          AND $_POST['operativo'] != ''
           AND $_POST['aceptacion'] == "1"
           AND wp_verify_nonce($_POST['aspirante_nonce'], 'graba_aspirante')
         ){
@@ -61,6 +64,7 @@ function LMG_plugin_form () {
         $nivel_html = (int)$_POST['nivel_html'];
         $nivel_css = (int)$_POST['nivel_css'];
         $nivel_js = (int)$_POST['nivel_js'];
+        $operativo = sanitize_text_field($_POST['operativo'] );
         $aceptacion = (int)$_POST['aceptacion'];
         //Modificacion el formato de la fecha
         $created_at = date('Y-m-d H:i:s');
@@ -72,6 +76,7 @@ function LMG_plugin_form () {
                 'nivel_html' => $nivel_html,
                 'nivel_css' => $nivel_css,
                 'nivel_js' => $nivel_js,
+                'operativo' => $operativo,
                 'aceptacion' => $aceptacion,
                 'created_at' => $created_at,
               )
@@ -85,18 +90,18 @@ function LMG_plugin_form () {
       ob_start( );
       ?>
 
-      <form action="<?php get_the_permalink(); ?>" method="post" class="formulario">
+      <form action="<?php get_the_permalink(); ?>" method="post" class="formulario" id="aspirform">
         <!-- La funcion wp_once comprueba que el formulario que se está procesando viene de nuestra web -->
         <?php wp_nonce_field('graba_aspirante', 'aspirante_nonce'); ?>
         <div class="form-input">
           <label for="nombre">Nombre</label>
           <input type="text" name="nombre" required="required">
-        </div>
+        </div></br>
 
         <div class="form-input">
           <label for="correo">Correo</label>
           <input type="correo" name="correo" id="correo" required>
-        </div>
+        </div></br>
 
         <div class="form-input">
           <label for="nivel_html">¿Cuál es tu Nivel de HTML?</label>
@@ -104,7 +109,7 @@ function LMG_plugin_form () {
           <input type="radio" name="nivel_html" value="2" required> Estoy aprendiendo </br>
           <input type="radio" name="nivel_html" value="3" required> Tengo experiencia </br>
           <input type="radio" name="nivel_html" value="4" required> Lo domino al dedillo </br>
-        </div>
+        </div></br>
 
         <div class="form-input">
           <label for="nivel_css">¿Cuál es tu Nivel de css?</label>
@@ -112,7 +117,7 @@ function LMG_plugin_form () {
           <input type="radio" name="nivel_css" value="2" required> Estoy aprendiendo </br>
           <input type="radio" name="nivel_css" value="3" required> Tengo experiencia </br>
           <input type="radio" name="nivel_css" value="4" required> Lo domino al dedillo </br>
-        </div>
+        </div></br>
 
         <div class="form-input">
           <label for="nivel_js">¿Cuál es tu Nivel de JavasCript?</label>
@@ -120,17 +125,32 @@ function LMG_plugin_form () {
           <input type="radio" name="nivel_js" value="2" required> Estoy aprendiendo </br>
           <input type="radio" name="nivel_js" value="3" required> Tengo experiencia </br>
           <input type="radio" name="nivel_js" value="4" required> Lo domino al dedillo </br>
-        </div>
+        </div></br>
+
+        <div class="form-input">
+          <label for="operativo">¿Qué sistema operativo usa?</label>
+          <select name="operativo">
+              <option value="Windows">Windows</option>
+              <option value="MacOs">MacOs</option>
+              <option value="Linux">Linux</option>
+              <option value="Otro">Otro</option>
+          </select>
+        </div></br>
 
         <div class="form-input">
           <label for="aceptacion">La información facilitada se trata con respeto y admiración</label>
           <input type="checkbox" name="aceptacion" id="aceptacion" value="1"> Entiendo y acepto las condiciones
-        </div>
+        </div></br>
+
 
         <div class="form-input">
           <input type="submit" value="Enviar">
         </div>
+
       </form>
+
+
+
       <?php
       return ob_get_clean();
 }
