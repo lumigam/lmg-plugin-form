@@ -142,14 +142,10 @@ function LMG_plugin_form () {
           <input type="checkbox" name="aceptacion" id="aceptacion" value="1"> Entiendo y acepto las condiciones
         </div></br>
 
-
         <div class="form-input">
           <input type="submit" value="Enviar">
         </div>
-
       </form>
-
-
 
       <?php
       return ob_get_clean();
