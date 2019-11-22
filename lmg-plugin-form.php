@@ -11,11 +11,11 @@ function lmg_Aspirante_init()
 {
 
     global $wpdb;
-    $tabla_aspirantes = $wpdb->prefix . 'aspirante';
+    $tabla_aspirante = $wpdb->prefix . 'aspirante';
     $charset_collate = $wpdb->get_charset_collate();
 
     //Prepara la consulta que vamos a lanzar para crear la $tabla
-    $query = "CREATE TABLE IF NOT EXISTS $tabla_aspirantes(
+    $query = "CREATE TABLE IF NOT EXISTS $tabla_aspirante(
       id mediumint (9) NOT NULL AUTO_INCREMENT,
       nombre varchar (40) NOT NULL,
       correo varchar (100) NOT NULL,
@@ -54,7 +54,7 @@ function LMG_plugin_form () {
           AND wp_verify_nonce($_POST['aspirante_nonce'], 'graba_aspirante')
         ){
         //Si viene con datos en nombre, los metemos en la tabla, tb creamos variables para sanear lo que viene en el form
-        $tabla_aspirantes = $wpdb->prefix . 'aspirante';
+        $tabla_aspirante = $wpdb->prefix . 'aspirante';
         $nombre = sanitize_text_field( $_POST['nombre'] );
         $correo = sanitize_text_field( $_POST['correo'] );
         //los de seleccion los saneamos a enteros
@@ -65,11 +65,11 @@ function LMG_plugin_form () {
         //Modificacion el formato de la fecha
         $created_at = date('Y-m-d H:i:s');
         $wpdb->insert(
-            $tabla_aspirantes,
+            $tabla_aspirante,
             array(
                 'nombre' => $nombre,
                 'correo' => $correo,
-                'nivel_hmtl' => $nivel_html,
+                'nivel_html' => $nivel_html,
                 'nivel_css' => $nivel_css,
                 'nivel_js' => $nivel_js,
                 'aceptacion' => $aceptacion,
@@ -95,11 +95,11 @@ function LMG_plugin_form () {
 
         <div class="form-input">
           <label for="correo">Correo</label>
-          <input type="correo" name="Correo" id="correo" required>
+          <input type="correo" name="correo" id="correo" required>
         </div>
 
         <div class="form-input">
-          <label for="Nivel Html">¿Cuál es tu Nivel de HTML?</label>
+          <label for="nivel_html">¿Cuál es tu Nivel de HTML?</label>
           <input type="radio" name="nivel_html" value="1" required> Nada </br>
           <input type="radio" name="nivel_html" value="2" required> Estoy aprendiendo </br>
           <input type="radio" name="nivel_html" value="3" required> Tengo experiencia </br>
@@ -124,7 +124,7 @@ function LMG_plugin_form () {
 
         <div class="form-input">
           <label for="aceptacion">La información facilitada se trata con respeto y admiración</label>
-          <input type="checkbox" name="aceptacion" id="aceptacion" value="1" required> Entiendo y acepto las condiciones
+          <input type="checkbox" name="aceptacion" id="aceptacion" value="1"> Entiendo y acepto las condiciones
         </div>
 
         <div class="form-input">
