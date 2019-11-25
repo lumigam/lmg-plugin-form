@@ -151,4 +151,29 @@ function LMG_plugin_form () {
       return ob_get_clean();
 }
 
+add_action( "admin_menu", "lmg_form_menu" );
+
+//Agrega menú en el Panel de Administración de WP
+
+function lmg_form_menu (){
+
+    add_menu_page( "Formulario de Aspirantes", "Aspirantes", "manage_options", "lmg_form_menu", "lmg_form_admin", "dashicons-feedback", 75 );
+
+}
+
+function lmg_form_admin (){
+
+    global $wpdb;
+    $tabla_aspirante = $wpdb->prefix . "aspirante";
+    $aspirante = $wpdb->get_results("SELECT * FROM $tabla_aspirante");
+    echo '<div class="wrap"> <h1>Lista de la Tabla</h1>';
+    echo '<table class="wp-list-table widefat fixed striped">';
+    echo '<thead><tr><th width = "30%">Nombre</th><th width = "20%">Correo</th>';
+    echo'<th>HTML</th><th>CSS</th><th>PHP</th><th>JavasCript</th>';
+    echo '</tr></thead>';
+    echo '<tbody id="the-list"';
+
+
+}
+
 ?>
