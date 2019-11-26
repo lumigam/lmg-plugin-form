@@ -169,10 +169,26 @@ function lmg_form_admin (){
     echo '<div class="wrap"> <h1>Lista de la Tabla</h1>';
     echo '<table class="wp-list-table widefat fixed striped">';
     echo '<thead><tr><th width = "30%">Nombre</th><th width = "20%">Correo</th>';
-    echo'<th>HTML</th><th>CSS</th><th>PHP</th><th>JavasCript</th>';
+    echo '<th>HTML</th><th>CSS</th><th>JavasCript</th><th>Operativo<th/>';
     echo '</tr></thead>';
     echo '<tbody id="the-list"';
+    foreach ($aspirante as $aspirante) {
+      $nombre = esc_textarea( $aspirante->nombre );
+      $correo = esc_textarea( $aspirante->correo );
+      $nivel_html = int( $aspirante->nivel_html );
+      $nivel_css = int( $aspirante->nivel_css );
+      $nivel_js = int( $aspirante->nivel_js );
+      $nivel_html = int( $aspirante->nivel_html );
+      $operativo = esc_textarea( $aspirante->operativo );
+      $total = $nivel_html + $nivel_css + $nivel_js;
 
+      echo "<tr><td><a href='#' title='$operativo'>$nombre</a></td>";
+      echo "<td>$correo</td><td>$nivel_html</td><td>$nivel_css</td></td>$nivel_js</td>";
+      echo "<td>$total</td></tr>";
+
+    }
+
+    echo "</tbody></table></div>";
 
 }
 
